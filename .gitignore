@@ -1,0 +1,12 @@
+node_modules
+.next
+out
+dist
+.env
+.env*.local
+.vercel
+.turbo
+*.log
+ChatGPT Image*.png
+supabase/.branches
+supabase/.temp

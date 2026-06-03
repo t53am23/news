@@ -1,0 +1,7 @@
+project_id = "news"
+
+[functions.fetch-content]
+verify_jwt = false
+
+[functions.support-contact]
+verify_jwt = false
