@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { Play } from "lucide-react";
+import { StoryLink } from "@/components/story-link";
 import { Badge } from "@/components/ui/badge";
 import { SourceBadge } from "@/components/source-badges";
 import type { SignalBrief } from "@/lib/types";
@@ -7,7 +7,7 @@ import type { SignalBrief } from "@/lib/types";
 export function VideoCard({ brief }: { brief: SignalBrief }) {
   return (
     <article className="premium-panel overflow-hidden">
-      <Link href={`/brief/${brief.id}`} className="block">
+      <StoryLink brief={brief} className="block">
         <div className="relative aspect-video overflow-hidden bg-muted">
           {brief.imageUrl && (
             <div
@@ -30,7 +30,7 @@ export function VideoCard({ brief }: { brief: SignalBrief }) {
             <Badge>{brief.category}</Badge>
           </div>
         </div>
-      </Link>
+      </StoryLink>
     </article>
   );
 }

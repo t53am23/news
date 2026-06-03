@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "About",
-  description: "About Choyis news and the SignalBrief intelligence model."
+  description: "About Choyis news and its source-based intelligence briefing model."
 };
 
 export default function AboutPage() {

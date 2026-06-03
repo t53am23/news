@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArticleCard } from "@/components/article-card";
 import { CountrySelector } from "@/components/country-selector";
 import { SourceDirectoryCard } from "@/components/source-directory-card";
 import { EmptyState } from "@/components/states";
 import { Badge } from "@/components/ui/badge";
-import { briefs } from "@/lib/mock-data";
-import { countries, getSourcesByCountry } from "@/lib/source-registry";
+import { getLocalCountryFeed, getSourceDirectoryEntriesWithStatus } from "@/lib/live";
+import { countries } from "@/lib/source-registry";
 import { slugify } from "@/lib/utils";
 
 type Params = { country: string };
@@ -24,11 +25,11 @@ export function generateMetadata({ params }: { params: Params }): Metadata {
   };
 }
 
-function StoryGroup({ title, items }: { title: string; items: typeof briefs }) {
+function StoryGroup({ title, items }: { title: string; items: Awaited<ReturnType<typeof getLocalCountryFeed>>["items"] }) {
   if (!items.length) return null;
   return (
     <section className="space-y-4">
-      <h2 className="text-2xl font-semibold tracking-tight">{title}</h2>
+      <h2 className="text-xl font-semibold tracking-tight">{title}</h2>
       <div className="grid gap-4 lg:grid-cols-2">
         {items.map((brief) => <ArticleCard key={brief.id} brief={brief} />)}
       </div>
@@ -36,13 +37,21 @@ function StoryGroup({ title, items }: { title: string; items: typeof briefs }) {
   );
 }
 
-export default function LocalCountryPage({ params }: { params: Params }) {
+export default async function LocalCountryPage({
+  params,
+  searchParams
+}: {
+  params: Params;
+  searchParams?: Record<string, string | string[] | undefined>;
+}) {
   const country = countries.find((item) => slugify(item) === params.country);
   if (!country) notFound();
 
-  const countryItems = briefs.filter((brief) => brief.country === country || brief.region === country);
-  const countrySources = getSourcesByCountry(country);
-  const business = countryItems.filter((brief) => ["Startups & Business", "Local"].includes(brief.category) && brief.tags.some((tag) => ["Business", "Markets", "Investment", "Local news"].includes(tag)));
+  const page = Number(Array.isArray(searchParams?.page) ? searchParams?.page[0] : searchParams?.page || "1");
+  const feed = await getLocalCountryFeed(country, { page, pageSize: 18, region: country });
+  const countryItems = feed.items;
+  const countrySources = getSourceDirectoryEntriesWithStatus().filter((source) => source.country === country || source.region === country);
+  const business = countryItems.filter((brief) => ["Startups & Business", "Local"].includes(brief.category));
   const policy = countryItems.filter((brief) => ["Politics & Policy", "Visa & Immigration", "Work & Sponsorship"].includes(brief.category));
   const community = countryItems.filter((brief) => brief.category === "Community Pulse" || brief.providerType === "community_trend");
   const lifestyle = countryItems.filter((brief) => brief.category === "Health & Lifestyle" || brief.subcategory === "Entertainment");
@@ -62,18 +71,25 @@ export default function LocalCountryPage({ params }: { params: Params }) {
 
       {countryItems.length ? (
         <div className="space-y-8">
-          <StoryGroup title="Top Local Stories" items={countryItems.slice(0, 4)} />
+          <StoryGroup title="Top Local Stories" items={countryItems} />
           <StoryGroup title="Business and Economy" items={business} />
           <StoryGroup title="Politics, Policy, Visa" items={policy} />
           <StoryGroup title="Community Pulse" items={community} />
           <StoryGroup title="Entertainment and Lifestyle" items={lifestyle} />
+          {feed.hasMore && (
+            <div className="flex justify-center">
+              <Link href={`/local/${params.country}?page=${page + 1}`} className="rounded-full border border-border bg-card px-5 py-2.5 text-sm font-semibold text-primary shadow-sm">
+                Load More
+              </Link>
+            </div>
+          )}
         </div>
       ) : (
         <EmptyState title={`${country} local feed is source-ready`} message="Country-specific source adapters are ready for RSS/API and directory-only entries." />
       )}
 
       <section className="space-y-4">
-        <h2 className="text-2xl font-semibold tracking-tight">Official Updates</h2>
+        <h2 className="text-xl font-semibold tracking-tight">Official Updates</h2>
         {officialSources.length ? (
           <div className="grid gap-4 lg:grid-cols-3">
             {officialSources.map((source) => <SourceDirectoryCard key={source.id} source={source} />)}
@@ -84,7 +100,7 @@ export default function LocalCountryPage({ params }: { params: Params }) {
       </section>
 
       <section className="space-y-4">
-        <h2 className="text-2xl font-semibold tracking-tight">Source Directory for {country}</h2>
+        <h2 className="text-xl font-semibold tracking-tight">Source Directory for {country}</h2>
         <div className="grid gap-4 lg:grid-cols-3">
           {countrySources.map((source) => <SourceDirectoryCard key={source.id} source={source} />)}
         </div>

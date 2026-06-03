@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { CountrySelector } from "@/components/country-selector";
 import { SourceDirectoryCard } from "@/components/source-directory-card";
-import { sourceRegistry } from "@/lib/source-registry";
+import { getSourceDirectoryEntriesWithStatus } from "@/lib/live";
 
 export const metadata: Metadata = {
   title: "Coverage Network",
@@ -9,6 +9,8 @@ export const metadata: Metadata = {
 };
 
 export default function SourceDirectoryPage() {
+  const sources = getSourceDirectoryEntriesWithStatus();
+
   return (
     <div className="mx-auto max-w-7xl space-y-8 px-4 py-8 sm:px-6">
       <header className="premium-panel p-6 sm:p-8">
@@ -19,7 +21,7 @@ export default function SourceDirectoryPage() {
       </header>
       <CountrySelector />
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-        {sourceRegistry.map((source) => <SourceDirectoryCard key={source.id} source={source} />)}
+        {sources.map((source) => <SourceDirectoryCard key={source.id} source={source} />)}
       </div>
     </div>
   );

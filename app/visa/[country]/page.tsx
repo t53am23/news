@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArticleCard } from "@/components/article-card";
 import { SensitivityDisclaimer } from "@/components/sensitivity-disclaimer";
 import { EmptyState } from "@/components/states";
 import { Badge } from "@/components/ui/badge";
-import { briefs } from "@/lib/mock-data";
+import { getVisaCountryFeed } from "@/lib/live";
 import { visaCategories, visaCountries } from "@/lib/navigation";
 import { slugify } from "@/lib/utils";
 
@@ -23,11 +24,19 @@ export function generateMetadata({ params }: { params: Params }): Metadata {
   };
 }
 
-export default function VisaCountryPage({ params }: { params: Params }) {
+export default async function VisaCountryPage({
+  params,
+  searchParams
+}: {
+  params: Params;
+  searchParams?: Record<string, string | string[] | undefined>;
+}) {
   const country = visaCountries.find((item) => slugify(item) === params.country);
   if (!country) notFound();
 
-  const items = briefs.filter((brief) => brief.country === country || brief.region === country);
+  const page = Number(Array.isArray(searchParams?.page) ? searchParams?.page[0] : searchParams?.page || "1");
+  const feed = await getVisaCountryFeed(country, { page, pageSize: 18 });
+  const items = feed.items;
 
   return (
     <div className="mx-auto max-w-7xl space-y-8 px-4 py-8 sm:px-6">
@@ -43,9 +52,18 @@ export default function VisaCountryPage({ params }: { params: Params }) {
       </header>
       <SensitivityDisclaimer />
       {items.length ? (
-        <div className="grid gap-4 lg:grid-cols-2">
-          {items.map((brief) => <ArticleCard key={brief.id} brief={brief} />)}
-        </div>
+        <section className="space-y-5">
+          <div className="grid gap-4 lg:grid-cols-2">
+            {items.map((brief) => <ArticleCard key={brief.id} brief={brief} />)}
+          </div>
+          {feed.hasMore && (
+            <div className="flex justify-center">
+              <Link href={`/visa/${params.country}?page=${page + 1}`} className="rounded-full border border-border bg-card px-5 py-2.5 text-sm font-semibold text-primary shadow-sm">
+                Load More
+              </Link>
+            </div>
+          )}
+        </section>
       ) : (
         <EmptyState title={`${country} source adapters are ready`} message="Official update pages can be connected without storing full article text." />
       )}

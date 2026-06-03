@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { CountryBadge, SourceBadge } from "@/components/source-badges";
 import { SaveButton } from "@/components/save-button";
+import { getStoryHrefAndTarget } from "@/components/story-link";
 import type { SignalBrief } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
 
@@ -32,7 +33,8 @@ export function HeroStory({ items }: { items: SignalBrief[] }) {
   if (!featured.length) return null;
 
   const brief = featured[index] ?? featured[0];
-  const minHeight = "min-h-[240px] sm:min-h-[310px] lg:min-h-[360px] xl:min-h-[380px]";
+  const { href, external } = getStoryHrefAndTarget(brief);
+  const minHeight = "min-h-[210px] sm:min-h-[280px] lg:min-h-[350px] xl:min-h-[380px]";
   const openSource = () => window.open(brief.originalUrl, "_blank", "noopener,noreferrer");
   const showPrev = () => setIndex((current) => (current - 1 + featured.length) % featured.length);
   const showNext = () => setIndex((current) => (current + 1) % featured.length);
@@ -92,7 +94,7 @@ export function HeroStory({ items }: { items: SignalBrief[] }) {
             <Star className="h-3.5 w-3.5 fill-amber-300 text-amber-300" />
             Top story
           </Badge>
-          <h2 className="max-w-xl text-[1.9rem] font-semibold leading-tight sm:text-4xl">{brief.title}</h2>
+          <h2 className="max-w-xl text-[1.7rem] font-semibold leading-tight sm:text-4xl">{brief.title}</h2>
           <p className="mt-3 max-w-lg text-sm leading-6 text-slate-200 sm:mt-4 sm:text-base">{brief.summary}</p>
           <div className="mt-6 flex flex-wrap items-center gap-2">
             <SourceBadge brief={brief} />
@@ -101,16 +103,26 @@ export function HeroStory({ items }: { items: SignalBrief[] }) {
             <Badge className="bg-white/10 text-white">{brief.readTime}</Badge>
           </div>
           <div className="mt-6 flex flex-wrap items-center gap-3 sm:mt-7" onClick={(event) => event.stopPropagation()}>
-            <Button asChild>
-              <Link href={`/brief/${brief.id}`}>
-                Read full brief <ArrowRight className="h-4 w-4" />
-              </Link>
-            </Button>
-            <Button asChild variant="secondary" className="border-white/15 bg-white/10 text-white hover:bg-white/15">
-              <a href={brief.originalUrl} target="_blank" rel="noreferrer">
-                Open source <ExternalLink className="h-4 w-4" />
-              </a>
-            </Button>
+            {external ? (
+              <Button asChild>
+                <a href={href} target="_blank" rel="noreferrer">
+                  Open source <ExternalLink className="h-4 w-4" />
+                </a>
+              </Button>
+            ) : (
+              <Button asChild>
+                <Link href={href}>
+                  Read full brief <ArrowRight className="h-4 w-4" />
+                </Link>
+              </Button>
+            )}
+            {!external && (
+              <Button asChild variant="secondary" className="border-white/15 bg-white/10 text-white hover:bg-white/15">
+                <a href={brief.originalUrl} target="_blank" rel="noreferrer">
+                  Open source <ExternalLink className="h-4 w-4" />
+                </a>
+              </Button>
+            )}
             <SaveButton title={brief.title} />
           </div>
         </div>

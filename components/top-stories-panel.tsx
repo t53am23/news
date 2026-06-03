@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ChevronRight, Newspaper } from "lucide-react";
+import { StoryLink } from "@/components/story-link";
 import { Badge } from "@/components/ui/badge";
 import { SourceBadge } from "@/components/source-badges";
 import type { SignalBrief } from "@/lib/types";
@@ -22,7 +23,7 @@ export function TopStoriesPanel({ stories }: { stories: SignalBrief[] }) {
       </div>
 
       <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
-        <Link href={`/brief/${lead.id}`} className="group block">
+        <StoryLink brief={lead} className="group block">
           <div className="relative aspect-[16/10] overflow-hidden rounded-2xl bg-gradient-to-br from-blue-950 via-slate-900 to-cyan-950 bg-cover bg-center">
             <div
               aria-hidden="true"
@@ -37,11 +38,11 @@ export function TopStoriesPanel({ stories }: { stories: SignalBrief[] }) {
           <h2 className="mt-3 text-2xl font-semibold leading-tight group-hover:text-primary">{lead.title}</h2>
           <p className="mt-3 line-clamp-2 text-sm leading-6 text-muted-foreground">{lead.summary}</p>
           <p className="mt-3 text-sm text-muted-foreground">{formatDate(lead.publishedAt)}</p>
-        </Link>
+        </StoryLink>
 
         <div className="divide-y divide-border/70">
           {side.map((story) => (
-            <Link key={story.id} href={`/brief/${story.id}`} className="grid gap-4 py-4 first:pt-0 sm:grid-cols-[1fr_112px]">
+            <StoryLink key={story.id} brief={story} className="grid gap-4 py-4 first:pt-0 sm:grid-cols-[1fr_112px]">
               <div>
                 <SourceBadge brief={story} />
                 <h3 className="mt-2 text-lg font-semibold leading-snug hover:text-primary">{story.title}</h3>
@@ -52,7 +53,7 @@ export function TopStoriesPanel({ stories }: { stories: SignalBrief[] }) {
                 className="hidden min-h-24 rounded-xl bg-gradient-to-br from-slate-900 to-blue-950 bg-cover bg-center sm:block"
                 style={{ backgroundImage: story.imageUrl ? `url(${story.imageUrl})` : undefined }}
               />
-            </Link>
+            </StoryLink>
           ))}
         </div>
       </div>

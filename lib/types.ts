@@ -33,12 +33,25 @@ export type SignalBrief = {
   readTime?: string;
   trustScore?: number;
   tags: string[];
+  provider?: string;
+  language?: string;
+  city?: string;
+  isLive?: boolean;
+  isFallback?: boolean;
+  linkBehavior?: "source" | "brief";
   contentType: ContentType;
   providerType: ProviderType;
   sensitivityLevel?: SensitivityLevel;
   disclaimerRequired?: boolean;
   fetchedAt?: string;
 };
+
+export type SourceOperationalStatus =
+  | "active"
+  | "available_no_key"
+  | "skipped_missing_key"
+  | "fallback_only"
+  | "inactive";
 
 export type SourceMode = ProviderType;
 
@@ -71,6 +84,8 @@ export type SourceConfig = {
   url: string;
   feedUrl?: string;
   apiProvider?: "guardian" | "gnews" | "github" | "youtube" | "openalex";
+  providerId?: string;
+  requiredEnvVar?: string;
   trustTier: TrustTier;
   notes: string;
 };
@@ -89,8 +104,11 @@ export type SourceRegistryEntry = {
   homepage: string;
   feedUrl?: string;
   apiUrl?: string;
+  providerId?: string;
+  requiredEnvVar?: string;
   trustTier: TrustTier;
   notes: string;
+  status?: SourceOperationalStatus;
 };
 
 export type SectionConfig = {

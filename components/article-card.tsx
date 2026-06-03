@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { Clock } from "lucide-react";
+import { StoryLink } from "@/components/story-link";
 import { Badge } from "@/components/ui/badge";
 import { CountryBadge, CredibilityLabel, SourceBadge } from "@/components/source-badges";
 import { SaveButton } from "@/components/save-button";
@@ -22,7 +22,7 @@ export function ArticleCard({
       <div className="absolute right-3 top-3 z-10">
         <SaveButton title={brief.title} />
       </div>
-      <Link href={`/brief/${brief.id}`} className="block h-full" aria-label={`Open brief: ${brief.title}`}>
+      <StoryLink brief={brief} className="block h-full" ariaLabel={`Open story: ${brief.title}`}>
         <div className={featured ? "grid gap-0 md:grid-cols-[0.9fr_1.1fr]" : "grid gap-0 sm:grid-cols-[132px_1fr]"}>
           <div className={featured ? "relative min-h-64 bg-muted" : "relative min-h-28 bg-muted sm:min-h-full"}>
             <div
@@ -64,11 +64,11 @@ export function ArticleCard({
                   <span key={tag} className="text-xs text-muted-foreground">#{tag}</span>
                 ))}
               </div>
-              <span className="text-xs font-medium text-primary">Read brief</span>
+              <span className="text-xs font-medium text-primary">{brief.isLive ? "Open source" : "Read brief"}</span>
             </div>
           </div>
         </div>
-      </Link>
+      </StoryLink>
     </article>
   );
 }

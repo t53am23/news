@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArticleCard } from "@/components/article-card";
 import { CountrySelector } from "@/components/country-selector";
 import { EmptyState } from "@/components/states";
 import { Badge } from "@/components/ui/badge";
-import { githubFilters, briefs } from "@/lib/mock-data";
+import { githubFilters } from "@/lib/mock-data";
+import { getSectionFeed } from "@/lib/live";
 import { coreSections, visaCategories, visaCountries } from "@/lib/navigation";
 import { SensitivityDisclaimer } from "@/components/sensitivity-disclaimer";
 
@@ -33,11 +35,19 @@ export function generateMetadata({ params }: { params: Params }): Metadata {
   };
 }
 
-export default function SectionPage({ params }: { params: Params }) {
+export default async function SectionPage({
+  params,
+  searchParams
+}: {
+  params: Params;
+  searchParams?: Record<string, string | string[] | undefined>;
+}) {
   const section = coreSections.find((item) => item.slug === params.section);
   if (!section) notFound();
 
-  const items = briefs.filter((brief) => brief.category === section.category || brief.subcategory === section.category);
+  const page = Number(Array.isArray(searchParams?.page) ? searchParams?.page[0] : searchParams?.page || "1");
+  const feed = await getSectionFeed(params.section, { page, pageSize: 18 });
+  const items = feed.items;
   const sensitive = ["Visa & Immigration", "Health & Lifestyle", "Politics & Policy", "Work & Sponsorship"].includes(section.category);
 
   return (
@@ -76,9 +86,18 @@ export default function SectionPage({ params }: { params: Params }) {
       {sensitive && <SensitivityDisclaimer />}
 
       {items.length ? (
-        <div className="grid gap-4 xl:grid-cols-2">
-          {items.map((brief) => <ArticleCard key={brief.id} brief={brief} />)}
-        </div>
+        <section className="space-y-5">
+          <div className="grid gap-4 xl:grid-cols-2">
+            {items.map((brief) => <ArticleCard key={brief.id} brief={brief} />)}
+          </div>
+          {feed.hasMore && (
+            <div className="flex justify-center">
+              <Link href={`/${params.section}?page=${page + 1}`} className="rounded-full border border-border bg-card px-5 py-2.5 text-sm font-semibold text-primary shadow-sm">
+                Load More
+              </Link>
+            </div>
+          )}
+        </section>
       ) : (
         <EmptyState title={`${section.title} is source-ready`} message="Mock cards will appear here as source adapters return matching content." />
       )}

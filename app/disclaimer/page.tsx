@@ -12,7 +12,7 @@ export default function DisclaimerPage() {
       <h1 className="text-3xl font-semibold tracking-tight sm:text-5xl">Disclaimer</h1>
       <SensitivityDisclaimer />
       <div className="premium-panel space-y-5 p-6 leading-7 text-muted-foreground">
-        <p>SignalBrief pages are not replacements for full publisher articles, official notices, legal advice, immigration advice, medical advice, financial advice, or professional judgement.</p>
+        <p>Choyis news brief pages are not replacements for full publisher articles, official notices, legal advice, immigration advice, medical advice, financial advice, or professional judgement.</p>
         <p>AI features, when introduced later, must be grounded in source metadata or official material and must not invent facts.</p>
         <p>For visa, immigration, health, legal, finance, and policy matters, always verify from the official source before acting.</p>
       </div>

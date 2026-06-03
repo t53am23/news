@@ -21,7 +21,7 @@ export const sources: SourceConfig[] = [
     url: "https://gnews.io/",
     apiProvider: "gnews",
     trustTier: "verified",
-    notes: "Optional global and local headline API provider. API keys stay in Supabase Edge Functions."
+    notes: "Optional global and local headline API provider. API keys stay on the server-side route layer."
   },
   {
     id: "bbc-world-rss",
@@ -32,7 +32,7 @@ export const sources: SourceConfig[] = [
     url: "https://www.bbc.com/news/world",
     feedUrl: "https://feeds.bbci.co.uk/news/world/rss.xml",
     trustTier: "verified",
-    notes: "RSS metadata only, with internal SignalBrief summaries and original attribution."
+    notes: "RSS metadata only, with internal Choyis news summaries and original attribution."
   },
   {
     id: "bbc-uk-rss",

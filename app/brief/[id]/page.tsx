@@ -7,7 +7,8 @@ import { SensitivityDisclaimer } from "@/components/sensitivity-disclaimer";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CountryBadge, CredibilityLabel, ProviderBadge, SourceBadge, TrustScore } from "@/components/source-badges";
-import { briefs, getBriefById, getRelatedBriefs } from "@/lib/mock-data";
+import { getBriefFallbackById, getRelatedFallbackBriefs } from "@/lib/live";
+import { briefs } from "@/lib/mock-data";
 import { sourceRegistry, sourceTierLabels } from "@/lib/source-registry";
 import { formatDate } from "@/lib/utils";
 
@@ -18,7 +19,7 @@ export function generateStaticParams() {
 }
 
 export function generateMetadata({ params }: { params: Params }): Metadata {
-  const brief = getBriefById(params.id);
+  const brief = getBriefFallbackById(params.id);
   if (!brief) return {};
 
   return {
@@ -40,10 +41,10 @@ export function generateMetadata({ params }: { params: Params }): Metadata {
 }
 
 export default function BriefDetailPage({ params }: { params: Params }) {
-  const brief = getBriefById(params.id);
+  const brief = getBriefFallbackById(params.id);
   if (!brief) notFound();
 
-  const related = getRelatedBriefs(brief);
+  const related = getRelatedFallbackBriefs(brief);
   const registrySource = sourceRegistry.find((source) => source.name === brief.sourceName || source.homepage === brief.sourceUrl);
   const summary = brief.summary || "This brief is based on source metadata. Open the original source for the full publisher context.";
 
@@ -148,6 +149,7 @@ export default function BriefDetailPage({ params }: { params: Params }) {
             </div>
             {registrySource && <p className="mt-4 text-sm leading-6 text-muted-foreground">{registrySource.notes}</p>}
           </section>
+
           <section className="premium-panel p-6">
             <h2 className="text-lg font-semibold">Original source</h2>
             <p className="mt-3 text-sm leading-6 text-muted-foreground">
@@ -159,6 +161,7 @@ export default function BriefDetailPage({ params }: { params: Params }) {
               </Link>
             </Button>
           </section>
+
           <section className="premium-panel p-6">
             <h2 className="text-lg font-semibold">Tags</h2>
             <div className="mt-4 flex flex-wrap gap-2">

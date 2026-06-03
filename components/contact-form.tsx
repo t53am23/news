@@ -22,7 +22,7 @@ export function ContactForm() {
         <textarea className="min-h-36 rounded-xl border border-border bg-background p-3 outline-none focus:ring-2 focus:ring-primary/25" placeholder="Tell us what happened or what you need." />
       </label>
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <p className="text-sm text-muted-foreground">Support email: support@signalbrief.com</p>
+        <p className="text-sm text-muted-foreground">Support email: support@choyisnews.com</p>
         <Button type="button">Submit</Button>
       </div>
     </form>

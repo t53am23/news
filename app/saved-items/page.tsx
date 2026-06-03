@@ -3,7 +3,7 @@ import { EmptyState } from "@/components/states";
 
 export const metadata: Metadata = {
   title: "Saved Items",
-  description: "Saved SignalBrief cards and briefings."
+  description: "Saved Choyis news cards and briefings."
 };
 
 export default function SavedItemsPage() {

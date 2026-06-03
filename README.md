@@ -1,10 +1,10 @@
 # Choyis news
 
-Premium hybrid news, policy, visa, and trend intelligence platform built with Next.js, TypeScript, Tailwind CSS, shadcn-compatible primitives, Lucide icons, and Supabase Edge Functions.
+Premium hybrid news, policy, visa, and trend intelligence platform built with Next.js, TypeScript, Tailwind CSS, shadcn-compatible primitives, Lucide icons, and a server-side live feed layer.
 
 ## Current build
 
-- Premium responsive UI with mock SignalBrief data.
+- Premium responsive UI with live feeds first and mock fallback data.
 - Internal brief/detail pages for every content card.
 - Source directory with API, RSS, official update page, and directory-only modes.
 - Visa country landing pages and sensitive-topic disclaimers.
@@ -18,7 +18,7 @@ npm install
 npm run dev
 ```
 
-Create `.env.local` from `.env.example` and keep provider keys server-side. Frontend code should call Supabase Edge Functions rather than external APIs directly.
+Create `.env.local` from `.env.example` and keep provider keys server-side. Frontend code should call the Next.js server routes rather than external APIs directly.
 
 ## Supabase
 
