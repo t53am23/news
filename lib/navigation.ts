@@ -63,7 +63,6 @@ export const coreSections: SectionConfig[] = [
 ];
 
 export const footerLinks = [
-  { title: "About", href: "/about" },
   { title: "Contact/Support", href: "/contact-support" },
   { title: "Privacy Policy", href: "/privacy-policy" },
   { title: "Terms of Use", href: "/terms-of-use" },

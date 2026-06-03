@@ -11,7 +11,7 @@ export function BriefingPanel() {
   const topics = ["UK Election", "Student Visa", "AI Tools", "Cybersecurity", "Policy", "Climate"];
 
   return (
-    <aside className="space-y-4">
+    <aside className="space-y-4 xl:max-h-[calc(100vh-7rem)] xl:overflow-auto xl:pr-1">
       <section className="rounded-2xl border border-border/70 bg-card p-4 shadow-sm">
         <div className="mb-3 flex items-center justify-between">
           <h2 className="text-lg font-semibold">Top updates</h2>
@@ -46,12 +46,12 @@ export function BriefingPanel() {
       <section className="rounded-2xl border border-border/70 bg-card p-4 shadow-sm">
         <h2 className="text-lg font-semibold">Get the Daily Briefing</h2>
         <p className="mt-2 text-sm leading-6 text-muted-foreground">Top stories delivered to your inbox every morning.</p>
-        <div className="mt-4 flex gap-2">
+        <div className="mt-4 flex flex-col gap-2 sm:flex-row">
           <div className="flex min-w-0 flex-1 items-center gap-2 rounded-xl border border-border bg-background px-3 py-2 text-sm text-muted-foreground">
             <Mail className="h-4 w-4" />
             <span className="truncate">Enter your email</span>
           </div>
-          <Button size="sm">
+          <Button size="sm" className="sm:self-auto">
             Subscribe <ArrowRight className="h-3.5 w-3.5" />
           </Button>
         </div>

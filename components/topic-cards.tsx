@@ -8,7 +8,7 @@ export function TopicCards({ topics }: { topics: Array<{ title: string; href: st
   return (
     <section className="space-y-3">
       <h2 className="text-2xl font-semibold tracking-tight">Your topics</h2>
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
         {topics.map((topic) => (
           <article key={topic.title} className="rounded-2xl border border-border/70 bg-card p-4 shadow-sm">
             <Link href={topic.href} className="mb-3 inline-flex items-center gap-1 text-base font-semibold">

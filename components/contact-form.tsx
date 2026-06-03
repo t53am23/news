@@ -5,11 +5,11 @@ export function ContactForm() {
     <form className="premium-panel grid gap-4 p-6">
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="grid gap-2 text-sm font-medium">
-          Name
-          <input className="h-11 rounded-xl border border-border bg-background px-3 outline-none focus:ring-2 focus:ring-primary/25" placeholder="Your name" />
+          Full name
+          <input className="h-11 rounded-xl border border-border bg-background px-3 outline-none focus:ring-2 focus:ring-primary/25" placeholder="Your full name" />
         </label>
         <label className="grid gap-2 text-sm font-medium">
-          Email
+          Email address
           <input type="email" className="h-11 rounded-xl border border-border bg-background px-3 outline-none focus:ring-2 focus:ring-primary/25" placeholder="you@example.com" />
         </label>
       </div>
@@ -23,7 +23,7 @@ export function ContactForm() {
       </label>
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-sm text-muted-foreground">Support email: support@signalbrief.com</p>
-        <Button type="button" variant="premium">Send message</Button>
+        <Button type="button">Submit</Button>
       </div>
     </form>
   );

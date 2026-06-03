@@ -39,7 +39,7 @@ export function FeatureCards() {
         <Link
           key={card.title}
           href={card.href}
-          className="group flex items-center gap-3 rounded-2xl border border-border/70 bg-card p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-primary/40"
+          className="group flex items-center gap-3 rounded-2xl border border-border/70 bg-card px-4 py-3.5 shadow-sm transition hover:-translate-y-0.5 hover:border-primary/40"
         >
           <span className={`grid h-11 w-11 shrink-0 place-items-center rounded-2xl ${card.tone}`}>
             <card.icon className="h-5 w-5" />

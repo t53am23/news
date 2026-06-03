@@ -3,12 +3,12 @@ import { footerLinks } from "@/lib/navigation";
 
 export function Footer() {
   return (
-    <footer className="mt-16 border-t border-border/70 py-10">
-      <div className="mx-auto flex max-w-7xl flex-col gap-5 px-4 text-sm text-muted-foreground sm:px-6 lg:flex-row lg:items-center lg:justify-between">
+    <footer className="mt-10 border-t border-border/70 py-6 sm:mt-12 sm:py-8">
+      <div className="mx-auto flex max-w-[1600px] flex-col gap-4 px-4 text-sm text-muted-foreground sm:px-5 xl:px-6">
         <p>(c) 2026 Choyis news. Source-based intelligence briefings with publisher attribution.</p>
-        <nav className="flex flex-wrap gap-4" aria-label="Footer navigation">
+        <nav className="flex flex-wrap gap-x-5 gap-y-3 lg:flex-nowrap lg:gap-6" aria-label="Footer navigation">
           {footerLinks.map((link) => (
-            <Link key={link.href} href={link.href} className="hover:text-foreground">
+            <Link key={link.href} href={link.href} className="whitespace-nowrap hover:text-foreground">
               {link.title}
             </Link>
           ))}

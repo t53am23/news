@@ -40,7 +40,7 @@ export function MoreNewsSection({ items }: { items: SignalBrief[] }) {
           Customize
         </Link>
       </div>
-      <div className="grid gap-4 lg:grid-cols-2">
+      <div className="grid gap-4 xl:grid-cols-2">
         <div className="rounded-2xl border border-border/70 bg-card px-4 shadow-sm">
           {left.map((item) => <StoryRow key={item.id} item={item} />)}
         </div>
