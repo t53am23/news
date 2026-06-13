@@ -8,8 +8,8 @@ import { formatDate } from "@/lib/utils";
 export function TopicCards({ topics }: { topics: Array<{ title: string; href: string; items: SignalBrief[] }> }) {
   return (
     <section className="space-y-3">
-      <h2 className="text-xl font-semibold tracking-tight">Your topics</h2>
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+      <h2 className="text-lg font-semibold tracking-tight sm:text-xl">Your topics</h2>
+      <div className="grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(min(100%,15rem),1fr))]">
         {topics.map((topic) => (
           <article key={topic.title} className="rounded-2xl border border-border/70 bg-card p-4 shadow-sm">
             <Link href={topic.href} className="mb-3 inline-flex items-center gap-1 text-base font-semibold">

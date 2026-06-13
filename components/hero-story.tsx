@@ -9,7 +9,7 @@ import { CountryBadge, SourceBadge } from "@/components/source-badges";
 import { SaveButton } from "@/components/save-button";
 import { getStoryHrefAndTarget } from "@/components/story-link";
 import type { SignalBrief } from "@/lib/types";
-import { formatDate } from "@/lib/utils";
+import { formatDate, isRealExternalUrl } from "@/lib/utils";
 
 export function HeroStory({ items }: { items: SignalBrief[] }) {
   const featured = items.length ? items : [];
@@ -34,8 +34,16 @@ export function HeroStory({ items }: { items: SignalBrief[] }) {
 
   const brief = featured[index] ?? featured[0];
   const { href, external } = getStoryHrefAndTarget(brief);
-  const minHeight = "min-h-[210px] sm:min-h-[280px] lg:min-h-[350px] xl:min-h-[380px]";
-  const openSource = () => window.open(brief.originalUrl, "_blank", "noopener,noreferrer");
+  const minHeight = "min-h-[190px] sm:min-h-[255px] lg:min-h-[340px] xl:min-h-[372px]";
+  const canOpenSource = isRealExternalUrl(brief.originalUrl);
+  const openStory = () => {
+    if (external && canOpenSource) {
+      window.open(brief.originalUrl, "_blank", "noopener,noreferrer");
+      return;
+    }
+
+    window.location.assign(href);
+  };
   const showPrev = () => setIndex((current) => (current - 1 + featured.length) % featured.length);
   const showNext = () => setIndex((current) => (current + 1) % featured.length);
 
@@ -57,11 +65,11 @@ export function HeroStory({ items }: { items: SignalBrief[] }) {
         className={`relative overflow-hidden rounded-2xl border border-border/70 bg-slate-950 text-white ${minHeight}`}
         role="button"
         tabIndex={0}
-        onClick={openSource}
+        onClick={openStory}
         onKeyDown={(event) => {
           if (event.key === "Enter" || event.key === " ") {
             event.preventDefault();
-            openSource();
+            openStory();
           }
         }}
         onTouchStart={(event) => {
@@ -94,7 +102,7 @@ export function HeroStory({ items }: { items: SignalBrief[] }) {
             <Star className="h-3.5 w-3.5 fill-amber-300 text-amber-300" />
             Top story
           </Badge>
-          <h2 className="max-w-xl text-[1.7rem] font-semibold leading-tight sm:text-4xl">{brief.title}</h2>
+          <h2 className="max-w-xl text-[1.55rem] font-semibold leading-tight sm:text-4xl">{brief.title}</h2>
           <p className="mt-3 max-w-lg text-sm leading-6 text-slate-200 sm:mt-4 sm:text-base">{brief.summary}</p>
           <div className="mt-6 flex flex-wrap items-center gap-2">
             <SourceBadge brief={brief} />
@@ -123,7 +131,7 @@ export function HeroStory({ items }: { items: SignalBrief[] }) {
                 </a>
               </Button>
             )}
-            <SaveButton title={brief.title} />
+            <SaveButton brief={brief} />
           </div>
         </div>
 

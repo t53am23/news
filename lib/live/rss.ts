@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto";
+import { applyContentRules } from "@/lib/content-rules";
 import type { ContentType, ProviderType, SignalBrief } from "@/lib/types";
 
 type ParseFeedOptions = {
@@ -107,7 +108,7 @@ function normalizeFeedItem(block: string, options: ParseFeedOptions, isAtom = fa
 
   if (!title || !originalUrl) return null;
 
-  return {
+  return applyContentRules({
     id: buildId(options.sourceName, originalUrl, title),
     title,
     summary: summary || "Open the original source for the latest publisher context.",
@@ -132,7 +133,7 @@ function normalizeFeedItem(block: string, options: ParseFeedOptions, isAtom = fa
     providerType: options.providerType || "rss",
     disclaimerRequired: options.providerType === "official_update_page" || options.category === "Cybersecurity",
     fetchedAt: new Date().toISOString()
-  };
+  });
 }
 
 export function parseFeed(xml: string, options: ParseFeedOptions) {

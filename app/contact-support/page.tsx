@@ -12,7 +12,7 @@ export default function ContactSupportPage() {
       <header>
         <h1 className="text-3xl font-semibold tracking-tight sm:text-5xl">Contact/Support</h1>
         <p className="mt-4 leading-7 text-muted-foreground">
-          Send a support message, source suggestion, correction request, or partnership note. This form is UI-only until the Supabase Edge Function is connected.
+          Send a support message, source suggestion, correction request, or partnership note. Messages are handled through the current Choyis support workflow while the backend support endpoint is finalized.
         </p>
       </header>
       <ContactForm />

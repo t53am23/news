@@ -3,6 +3,7 @@ export type ProviderType = "api" | "rss" | "official_update_page" | "community_t
 export type ContentType =
   | "article"
   | "video"
+  | "podcast"
   | "repo"
   | "research"
   | "review"
@@ -11,6 +12,15 @@ export type ContentType =
   | "official_notice";
 
 export type SensitivityLevel = "normal" | "legal" | "immigration" | "health" | "finance";
+export type PermissionsPosture = "clear_external" | "brief_metadata_only" | "directory_only" | "legal_review_needed";
+export type ContentIntent =
+  | "general_news"
+  | "official_update"
+  | "policy_notice"
+  | "advisory"
+  | "explainer"
+  | "multi_source"
+  | "tool_profile";
 
 export type SignalBrief = {
   id: string;
@@ -39,6 +49,10 @@ export type SignalBrief = {
   isLive?: boolean;
   isFallback?: boolean;
   linkBehavior?: "source" | "brief";
+  contentIntent?: ContentIntent;
+  sourceLabel?: string;
+  sourceStatus?: SourceOperationalStatus;
+  permissionsPosture?: PermissionsPosture;
   contentType: ContentType;
   providerType: ProviderType;
   sensitivityLevel?: SensitivityLevel;
@@ -51,7 +65,9 @@ export type SourceOperationalStatus =
   | "available_no_key"
   | "skipped_missing_key"
   | "fallback_only"
-  | "inactive";
+  | "inactive"
+  | "future"
+  | "legal_review_needed";
 
 export type SourceMode = ProviderType;
 
@@ -65,6 +81,7 @@ export type SourceType =
   | "cybersecurity"
   | "research"
   | "video_channel"
+  | "podcast"
   | "directory_only";
 
 export type TrustTier = "official" | "verified" | "business" | "community" | "lifestyle" | "directory";
@@ -109,6 +126,7 @@ export type SourceRegistryEntry = {
   trustTier: TrustTier;
   notes: string;
   status?: SourceOperationalStatus;
+  permissionsPosture?: PermissionsPosture;
 };
 
 export type SectionConfig = {

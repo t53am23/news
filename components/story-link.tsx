@@ -1,13 +1,14 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import type { SignalBrief } from "@/lib/types";
+import { isRealExternalUrl } from "@/lib/utils";
 
 function getStoryHref(brief: SignalBrief) {
-  return brief.linkBehavior === "source" || brief.isLive ? brief.originalUrl : `/brief/${brief.id}`;
+  return brief.linkBehavior === "source" && isRealExternalUrl(brief.originalUrl) ? brief.originalUrl : `/brief/${brief.id}`;
 }
 
 function isExternal(brief: SignalBrief) {
-  return brief.linkBehavior === "source" || brief.isLive;
+  return brief.linkBehavior === "source" && isRealExternalUrl(brief.originalUrl);
 }
 
 export function StoryLink({

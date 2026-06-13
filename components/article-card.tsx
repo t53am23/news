@@ -15,12 +15,12 @@ export function ArticleCard({
   compact?: boolean;
   featured?: boolean;
 }) {
-  const summary = brief.summary || "Source metadata is available. Open the brief for attribution and the original source link.";
+  const summary = brief.summary || "Source metadata is available. Read the original source for full publisher context.";
 
   return (
     <article className="group relative overflow-hidden rounded-2xl border border-border/70 bg-card shadow-sm transition duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-premium">
       <div className="absolute right-3 top-3 z-10">
-        <SaveButton title={brief.title} />
+        <SaveButton brief={brief} />
       </div>
       <StoryLink brief={brief} className="block h-full" ariaLabel={`Open story: ${brief.title}`}>
         <div className={featured ? "grid gap-0 md:grid-cols-[0.9fr_1.1fr]" : "grid gap-0 sm:grid-cols-[132px_1fr]"}>
@@ -56,7 +56,7 @@ export function ArticleCard({
                 <Clock className="h-3.5 w-3.5" />
                 {formatDate(brief.publishedAt)}
               </span>
-              <CredibilityLabel provider={brief.providerType} score={brief.trustScore} />
+              <CredibilityLabel provider={brief.providerType} />
             </div>
             <div className="mt-auto flex items-center justify-between gap-3 pt-5">
               <div className="flex flex-wrap gap-1.5">
@@ -64,7 +64,7 @@ export function ArticleCard({
                   <span key={tag} className="text-xs text-muted-foreground">#{tag}</span>
                 ))}
               </div>
-              <span className="text-xs font-medium text-primary">{brief.isLive ? "Open source" : "Read brief"}</span>
+              <span className="text-xs font-medium text-primary">{brief.linkBehavior === "source" ? "Open source" : "Read brief"}</span>
             </div>
           </div>
         </div>

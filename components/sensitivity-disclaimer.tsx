@@ -21,8 +21,7 @@ export function SensitivityDisclaimer({ brief, compact = false }: { brief?: Sign
         <div>
           {!compact && <p className="font-semibold">{label} disclaimer</p>}
           <p>
-            This summary is for information only and is not legal, immigration, medical, or professional advice. Always
-            verify from the official source.
+            This summary is for information only and is not legal, immigration, medical, or professional advice. Always verify from the original or official source.
           </p>
         </div>
       </div>

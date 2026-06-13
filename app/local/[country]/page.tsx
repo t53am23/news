@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
 import { ArticleCard } from "@/components/article-card";
 import { CountrySelector } from "@/components/country-selector";
 import { SourceDirectoryCard } from "@/components/source-directory-card";
@@ -8,7 +7,7 @@ import { EmptyState } from "@/components/states";
 import { Badge } from "@/components/ui/badge";
 import { getLocalCountryFeed, getSourceDirectoryEntriesWithStatus } from "@/lib/live";
 import { countries } from "@/lib/source-registry";
-import { slugify } from "@/lib/utils";
+import { slugify, titleFromSlug } from "@/lib/utils";
 
 type Params = { country: string };
 
@@ -17,8 +16,7 @@ export function generateStaticParams() {
 }
 
 export function generateMetadata({ params }: { params: Params }): Metadata {
-  const country = countries.find((item) => slugify(item) === params.country);
-  if (!country) return {};
+  const country = countries.find((item) => slugify(item) === params.country) || titleFromSlug(params.country);
   return {
     title: `${country} Local News and Intelligence`,
     description: `Top local stories, business, policy, community pulse, entertainment, official updates, and source directory for ${country}.`
@@ -30,7 +28,7 @@ function StoryGroup({ title, items }: { title: string; items: Awaited<ReturnType
   return (
     <section className="space-y-4">
       <h2 className="text-xl font-semibold tracking-tight">{title}</h2>
-      <div className="grid gap-4 lg:grid-cols-2">
+      <div className="grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(min(100%,20rem),1fr))]">
         {items.map((brief) => <ArticleCard key={brief.id} brief={brief} />)}
       </div>
     </section>
@@ -44,8 +42,7 @@ export default async function LocalCountryPage({
   params: Params;
   searchParams?: Record<string, string | string[] | undefined>;
 }) {
-  const country = countries.find((item) => slugify(item) === params.country);
-  if (!country) notFound();
+  const country = countries.find((item) => slugify(item) === params.country) || titleFromSlug(params.country);
 
   const page = Number(Array.isArray(searchParams?.page) ? searchParams?.page[0] : searchParams?.page || "1");
   const feed = await getLocalCountryFeed(country, { page, pageSize: 18, region: country });
@@ -58,10 +55,10 @@ export default async function LocalCountryPage({
   const officialSources = countrySources.filter((source) => source.trustTier === "official");
 
   return (
-    <div className="mx-auto max-w-[1500px] space-y-8 px-4 py-6 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-[1720px] space-y-8 px-4 py-6 sm:px-6 xl:px-8">
       <header className="rounded-2xl border border-border/70 bg-card p-6 shadow-sm sm:p-8">
         <Badge>Local intelligence</Badge>
-        <h1 className="mt-4 text-3xl font-semibold tracking-tight sm:text-5xl">{country} Local News</h1>
+        <h1 className="mt-4 text-2xl font-semibold tracking-tight sm:text-4xl">{country} Local News</h1>
         <p className="mt-4 max-w-3xl leading-7 text-muted-foreground">
           A country-specific view for top local stories, business and economy, politics and policy, visa updates, community pulse, lifestyle, official updates, and source discovery.
         </p>
@@ -85,13 +82,13 @@ export default async function LocalCountryPage({
           )}
         </div>
       ) : (
-        <EmptyState title={`${country} local feed is source-ready`} message="Country-specific source adapters are ready for RSS/API and directory-only entries." />
+        <EmptyState title={`No local stories for ${country} yet`} message="Try again shortly or widen the query as Choyis checks more live local sources." />
       )}
 
       <section className="space-y-4">
         <h2 className="text-xl font-semibold tracking-tight">Official Updates</h2>
         {officialSources.length ? (
-          <div className="grid gap-4 lg:grid-cols-3">
+          <div className="grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(min(100%,18rem),1fr))]">
             {officialSources.map((source) => <SourceDirectoryCard key={source.id} source={source} />)}
           </div>
         ) : (
@@ -101,7 +98,7 @@ export default async function LocalCountryPage({
 
       <section className="space-y-4">
         <h2 className="text-xl font-semibold tracking-tight">Source Directory for {country}</h2>
-        <div className="grid gap-4 lg:grid-cols-3">
+        <div className="grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(min(100%,18rem),1fr))]">
           {countrySources.map((source) => <SourceDirectoryCard key={source.id} source={source} />)}
         </div>
       </section>

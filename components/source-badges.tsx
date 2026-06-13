@@ -1,4 +1,4 @@
-import { BadgeCheck, ExternalLink, ShieldCheck } from "lucide-react";
+import { BadgeCheck, ExternalLink } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import type { SignalBrief } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -18,18 +18,8 @@ export function SourceBadge({ brief, compact = false }: { brief: SignalBrief; co
       <span className="grid h-5 min-w-5 place-items-center rounded-full bg-primary/10 px-1 text-[10px] font-bold text-primary">
         {sourceInitials(brief.sourceName)}
       </span>
-      {!compact && brief.sourceName}
+      {!compact && (brief.sourceName || "Source")}
     </Badge>
-  );
-}
-
-export function TrustScore({ score, className }: { score?: number; className?: string }) {
-  const value = score ?? 75;
-  return (
-    <span className={cn("inline-flex items-center gap-1 text-xs font-medium text-emerald-500", className)}>
-      <ShieldCheck className="h-3.5 w-3.5" />
-      {value}% trust
-    </span>
   );
 }
 
@@ -54,12 +44,11 @@ export function ProviderBadge({ provider }: { provider: SignalBrief["providerTyp
 }
 
 export function CredibilityLabel({ provider, score }: { provider: SignalBrief["providerType"]; score?: number }) {
-  if (provider === "official_update_page") return <Badge className="border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-300">Official</Badge>;
+  if (provider === "official_update_page") return <Badge className="border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-300">Official source</Badge>;
   if (provider === "community_trend") return <Badge className="border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-200">Community Trend</Badge>;
   if (provider === "directory_only") return <Badge>Directory Source</Badge>;
-  if (score) return <TrustScore score={score} />;
   return (
-    <span className="inline-flex items-center gap-1 text-xs font-medium text-blue-500">
+    <span className={cn("inline-flex items-center gap-1 text-xs font-medium text-blue-500", score ? "text-blue-600 dark:text-blue-300" : "")}>
       <BadgeCheck className="h-3.5 w-3.5" />
       Verified source
     </span>

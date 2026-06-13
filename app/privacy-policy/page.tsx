@@ -10,7 +10,7 @@ export default function PrivacyPolicyPage() {
   return (
     <LegalPage title="Privacy Policy">
       <p>Choyis news is designed to collect the minimum data needed to operate the service. The first version does not require login.</p>
-      <p>Future saved items, support messages, and account features may use Supabase. API keys and server-side provider tokens must never be exposed to the frontend.</p>
+      <p>Saved items and lightweight preferences can be stored locally in your browser. API keys and server-side provider tokens must never be exposed to the frontend.</p>
       <p>Analytics, if added, should be privacy-conscious and documented before production launch.</p>
     </LegalPage>
   );

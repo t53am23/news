@@ -57,9 +57,11 @@ export const coreSections: SectionConfig[] = [
   { title: "Developer Trends", slug: "developer-trends", category: "Developer Trends", icon: "Laptop", description: "Frameworks, tooling, open source movement, and software engineering trend signals." },
   { title: "GitHub Trends", slug: "github-trends", category: "GitHub Trends", icon: "Star", description: "Repository trends derived from GitHub Search API signals, stars, activity, and recency." },
   { title: "Video Briefs", slug: "video-briefs", category: "Video Briefs", icon: "PlaySquare", description: "Creator and publisher explainers with internal brief pages and source attribution." },
+  { title: "Podcast Briefs", slug: "podcasts", category: "Podcasts", icon: "PlaySquare", description: "Podcast discovery from open metadata and publisher-linked episode briefings." },
   { title: "Product Reviews", slug: "product-reviews", category: "Product Reviews", icon: "Newspaper", description: "Product discovery and review signals from licensed feeds or directory-only sources." },
   { title: "Research & Science", slug: "research-science", category: "Research & Science", icon: "FlaskConical", description: "Research, science, public datasets, preprints, and evidence-led discoveries." },
-  { title: "Health & Lifestyle Updates", slug: "health-lifestyle-updates", category: "Health & Lifestyle", icon: "HeartPulse", description: "Public health, wellbeing, family planning, social issues, and lifestyle policy signals." }
+  { title: "Health & Lifestyle Updates", slug: "health-lifestyle-updates", category: "Health & Lifestyle", icon: "HeartPulse", description: "Public health, wellbeing, family planning, social issues, and lifestyle policy signals." },
+  { title: "Human Rights", slug: "human-rights", category: "Human Rights", icon: "Contact", description: "Rights-related official updates, public-interest reporting, and sourced human-rights developments." }
 ];
 
 export const footerLinks = [

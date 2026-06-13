@@ -8,7 +8,6 @@ import { Badge } from "@/components/ui/badge";
 import { githubFilters } from "@/lib/mock-data";
 import { getSectionFeed } from "@/lib/live";
 import { coreSections, visaCategories, visaCountries } from "@/lib/navigation";
-import { SensitivityDisclaimer } from "@/components/sensitivity-disclaimer";
 
 type Params = { section: string };
 
@@ -48,14 +47,13 @@ export default async function SectionPage({
   const page = Number(Array.isArray(searchParams?.page) ? searchParams?.page[0] : searchParams?.page || "1");
   const feed = await getSectionFeed(params.section, { page, pageSize: 18 });
   const items = feed.items;
-  const sensitive = ["Visa & Immigration", "Health & Lifestyle", "Politics & Policy", "Work & Sponsorship"].includes(section.category);
 
   return (
-    <div className="mx-auto max-w-7xl space-y-8 px-4 py-8 sm:px-6">
+    <div className="mx-auto max-w-[1720px] space-y-8 px-4 py-8 sm:px-6 xl:px-8">
       <header className="premium-panel p-6 sm:p-8">
         <div className="max-w-3xl">
           <Badge>{section.category}</Badge>
-          <h1 className="mt-4 text-3xl font-semibold tracking-tight sm:text-5xl">{section.title}</h1>
+          <h1 className="mt-4 text-2xl font-semibold tracking-tight sm:text-4xl">{section.title}</h1>
           <p className="mt-4 text-base leading-7 text-muted-foreground">{section.description}</p>
         </div>
         {section.slug === "visa-immigration-watch" && (
@@ -83,11 +81,9 @@ export default async function SectionPage({
 
       {section.slug === "local-news" && <CountrySelector />}
 
-      {sensitive && <SensitivityDisclaimer />}
-
       {items.length ? (
         <section className="space-y-5">
-          <div className="grid gap-4 xl:grid-cols-2">
+          <div className="grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(min(100%,20rem),1fr))]">
             {items.map((brief) => <ArticleCard key={brief.id} brief={brief} />)}
           </div>
           {feed.hasMore && (
@@ -99,7 +95,7 @@ export default async function SectionPage({
           )}
         </section>
       ) : (
-        <EmptyState title={`${section.title} is source-ready`} message="Mock cards will appear here as source adapters return matching content." />
+        <EmptyState title={`No ${section.title.toLowerCase()} stories right now`} message="Try again shortly or broaden the filters as more live source metadata arrives." />
       )}
     </div>
   );

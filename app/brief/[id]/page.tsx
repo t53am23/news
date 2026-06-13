@@ -6,11 +6,11 @@ import { ArticleCard } from "@/components/article-card";
 import { SensitivityDisclaimer } from "@/components/sensitivity-disclaimer";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { CountryBadge, CredibilityLabel, ProviderBadge, SourceBadge, TrustScore } from "@/components/source-badges";
+import { CountryBadge, CredibilityLabel, ProviderBadge, SourceBadge } from "@/components/source-badges";
 import { getBriefFallbackById, getRelatedFallbackBriefs } from "@/lib/live";
 import { briefs } from "@/lib/mock-data";
 import { sourceRegistry, sourceTierLabels } from "@/lib/source-registry";
-import { formatDate } from "@/lib/utils";
+import { formatDate, isRealExternalUrl } from "@/lib/utils";
 
 type Params = { id: string };
 
@@ -47,6 +47,7 @@ export default function BriefDetailPage({ params }: { params: Params }) {
   const related = getRelatedFallbackBriefs(brief);
   const registrySource = sourceRegistry.find((source) => source.name === brief.sourceName || source.homepage === brief.sourceUrl);
   const summary = brief.summary || "This brief is based on source metadata. Open the original source for the full publisher context.";
+  const canOpenOriginal = isRealExternalUrl(brief.originalUrl);
 
   const schema = {
     "@context": "https://schema.org",
@@ -62,7 +63,7 @@ export default function BriefDetailPage({ params }: { params: Params }) {
   };
 
   return (
-    <article className="mx-auto max-w-6xl space-y-8 px-4 py-8 sm:px-6">
+    <article className="mx-auto max-w-[1720px] space-y-8 px-4 py-8 sm:px-6 xl:px-8">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
 
       <header className="premium-panel overflow-hidden">
@@ -88,8 +89,8 @@ export default function BriefDetailPage({ params }: { params: Params }) {
           <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
             <SourceBadge brief={brief} />
             <span className="inline-flex items-center gap-1"><Clock className="h-4 w-4" /> {formatDate(brief.publishedAt)}</span>
-            <TrustScore score={brief.trustScore} />
-            <CredibilityLabel provider={brief.providerType} score={brief.trustScore} />
+            <CredibilityLabel provider={brief.providerType} />
+            {brief.sourceLabel && <Badge>{brief.sourceLabel}</Badge>}
           </div>
         </div>
       </header>
@@ -143,7 +144,7 @@ export default function BriefDetailPage({ params }: { params: Params }) {
             <h2 className="text-lg font-semibold">Source credibility</h2>
             <div className="mt-4 flex flex-wrap gap-2">
               <ProviderBadge provider={brief.providerType} />
-              <CredibilityLabel provider={brief.providerType} score={brief.trustScore} />
+              <CredibilityLabel provider={brief.providerType} />
               {registrySource && <Badge>{sourceTierLabels[registrySource.trustTier]}</Badge>}
               {registrySource?.sourceType && <Badge className="capitalize">{registrySource.sourceType.replaceAll("_", " ")}</Badge>}
             </div>
@@ -155,11 +156,15 @@ export default function BriefDetailPage({ params }: { params: Params }) {
             <p className="mt-3 text-sm leading-6 text-muted-foreground">
               This page contains a short sourced brief. Full publisher content remains with the original source.
             </p>
-            <Button asChild variant="premium" className="mt-5 w-full">
-              <Link href={brief.originalUrl} target="_blank" rel="noreferrer">
-                Open source <ArrowUpRight className="h-4 w-4" />
-              </Link>
-            </Button>
+            {canOpenOriginal ? (
+              <Button asChild variant="premium" className="mt-5 w-full">
+                <Link href={brief.originalUrl} target="_blank" rel="noreferrer">
+                  Read original <ArrowUpRight className="h-4 w-4" />
+                </Link>
+              </Button>
+            ) : (
+              <p className="mt-5 text-sm text-muted-foreground">Original publisher access is not available for this fallback brief.</p>
+            )}
           </section>
 
           <section className="premium-panel p-6">
@@ -174,7 +179,7 @@ export default function BriefDetailPage({ params }: { params: Params }) {
       {related.length > 0 && (
         <section className="space-y-4">
           <h2 className="text-xl font-semibold">Related stories</h2>
-          <div className="grid gap-4 lg:grid-cols-3">
+          <div className="grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(min(100%,18rem),1fr))]">
             {related.map((item) => <ArticleCard key={item.id} brief={item} compact />)}
           </div>
         </section>

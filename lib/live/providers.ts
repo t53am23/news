@@ -1,5 +1,6 @@
 import { Buffer } from "node:buffer";
 import { createHash } from "node:crypto";
+import { applyContentRules } from "@/lib/content-rules";
 import type { SourceOperationalStatus, SignalBrief } from "@/lib/types";
 import { parseFeed } from "@/lib/live/rss";
 import type { ProviderId, SectionRule } from "@/lib/live/rules";
@@ -413,7 +414,7 @@ function normalizeProviderItem(item: Partial<SignalBrief> & Pick<SignalBrief, "t
     .digest("hex")
     .slice(0, 16);
 
-  return {
+  return applyContentRules({
     id,
     title: item.title,
     summary: item.summary || "Open the original source for the full publisher context.",
@@ -442,7 +443,7 @@ function normalizeProviderItem(item: Partial<SignalBrief> & Pick<SignalBrief, "t
     sensitivityLevel: item.sensitivityLevel,
     disclaimerRequired: item.disclaimerRequired,
     fetchedAt: new Date().toISOString()
-  } satisfies SignalBrief;
+  } satisfies SignalBrief);
 }
 
 async function fetchFeeds(feeds: FeedSource[]) {

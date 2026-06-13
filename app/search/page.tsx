@@ -49,10 +49,10 @@ export default async function SearchPage({
   ].filter(Boolean) as string[];
 
   return (
-    <div className="mx-auto max-w-7xl space-y-8 px-4 py-8 sm:px-6">
+    <div className="mx-auto max-w-[1720px] space-y-8 px-4 py-8 sm:px-6 xl:px-8">
       <header className="premium-panel p-6 sm:p-8">
         <Badge>Live search</Badge>
-        <h1 className="mt-4 text-3xl font-semibold tracking-tight sm:text-5xl">Search Results</h1>
+        <h1 className="mt-4 text-2xl font-semibold tracking-tight sm:text-4xl">Search Results</h1>
         <p className="mt-4 max-w-3xl leading-7 text-muted-foreground">
           Choyis news searches live providers server-side and falls back only when no live sources return matching items.
         </p>
@@ -65,7 +65,7 @@ export default async function SearchPage({
 
       {results.items.length ? (
         <section className="space-y-5">
-          <div className="grid gap-4 xl:grid-cols-2">
+          <div className="grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(min(100%,20rem),1fr))]">
             {results.items.map((item) => <ArticleCard key={item.id} brief={item} />)}
           </div>
           {results.hasMore && (

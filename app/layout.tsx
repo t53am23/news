@@ -51,7 +51,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body>
         <Providers>
           <DesktopNav />
-          <main className="min-h-screen pb-[calc(5.5rem+env(safe-area-inset-bottom))] xl:ml-[16rem] xl:pb-0">
+          <main className="min-h-screen pb-[calc(5.5rem+env(safe-area-inset-bottom))] xl:pb-0">
             {children}
             <Footer />
           </main>

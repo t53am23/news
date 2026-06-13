@@ -40,15 +40,17 @@ export function BriefingPanel({
         </div>
       </section>
 
-      <section className="rounded-2xl border border-border/70 bg-card p-4 shadow-sm">
-        <div className="mb-3 flex items-center justify-between">
-          <h2 className="text-lg font-semibold">Trending topics</h2>
-          <Link href="/world-news" className="text-xs font-semibold text-primary">View all</Link>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          {topics.map((topic) => <Badge key={topic}>{topic}</Badge>)}
-        </div>
-      </section>
+      {topics.length >= 4 && (
+        <section className="rounded-2xl border border-border/70 bg-card p-4 shadow-sm">
+          <div className="mb-3 flex items-center justify-between">
+            <h2 className="text-lg font-semibold">Trending topics</h2>
+            <Link href="/world-news" className="text-xs font-semibold text-primary">View all</Link>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {topics.map((topic) => <Badge key={topic}>{topic}</Badge>)}
+          </div>
+        </section>
+      )}
 
       {showNewsletter && (
         <section className="hidden rounded-2xl border border-border/70 bg-card p-4 shadow-sm md:block">

@@ -16,7 +16,9 @@ const statusLabelMap = {
   available_no_key: "Public access",
   skipped_missing_key: "Key needed",
   fallback_only: "Directory only",
-  inactive: "Inactive"
+  inactive: "Inactive",
+  future: "Future",
+  legal_review_needed: "Legal review needed"
 } as const;
 
 const statusClassMap = {
@@ -24,7 +26,9 @@ const statusClassMap = {
   available_no_key: "bg-blue-500/10 text-blue-700 dark:text-blue-400",
   skipped_missing_key: "bg-amber-500/10 text-amber-700 dark:text-amber-400",
   fallback_only: "bg-slate-500/10 text-slate-700 dark:text-slate-300",
-  inactive: "bg-muted text-muted-foreground"
+  inactive: "bg-muted text-muted-foreground",
+  future: "bg-violet-500/10 text-violet-700 dark:text-violet-300",
+  legal_review_needed: "bg-rose-500/10 text-rose-700 dark:text-rose-300"
 } as const;
 
 export function SourceDirectoryCard({ source }: { source: SourceRegistryEntry }) {
@@ -60,6 +64,12 @@ export function SourceDirectoryCard({ source }: { source: SourceRegistryEntry })
       {source.requiredEnvVar && (
         <p className="mt-4 text-xs text-muted-foreground">
           Server variable: <span className="font-medium text-foreground">{source.requiredEnvVar}</span>
+        </p>
+      )}
+
+      {source.permissionsPosture && (
+        <p className="mt-2 text-xs text-muted-foreground">
+          Permissions: <span className="font-medium capitalize text-foreground">{source.permissionsPosture.replaceAll("_", " ")}</span>
         </p>
       )}
 

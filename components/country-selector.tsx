@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import { MapPin } from "lucide-react";
+import { setPreference } from "@/lib/browser-storage";
 import { countries } from "@/lib/source-registry";
 import { slugify } from "@/lib/utils";
 
@@ -17,6 +20,7 @@ export function CountrySelector({ active = "Global" }: { active?: string }) {
             <Link
               key={country}
               href={country === "Global" ? "/local-news" : `/local/${slugify(country)}`}
+              onClick={() => setPreference("preferredCountry", country)}
               className={
                 isActive
                   ? "whitespace-nowrap rounded-full bg-primary px-3.5 py-2 text-sm font-semibold text-primary-foreground"

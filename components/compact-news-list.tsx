@@ -9,7 +9,7 @@ export function CompactNewsList({ title, href, items }: { title: string; href: s
   return (
     <section className="rounded-3xl border border-border/70 bg-card p-5 shadow-sm">
       <div className="mb-4 flex items-center justify-between border-b border-border/70 pb-4">
-        <Link href={href} className="text-xl font-semibold text-primary">{title}</Link>
+        <Link href={href} className="text-lg font-semibold text-primary">{title}</Link>
         <SlidersHorizontal className="h-5 w-5 text-muted-foreground" />
       </div>
       <div className="divide-y divide-border/70">

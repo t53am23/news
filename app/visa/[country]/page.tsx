@@ -1,13 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
 import { ArticleCard } from "@/components/article-card";
-import { SensitivityDisclaimer } from "@/components/sensitivity-disclaimer";
 import { EmptyState } from "@/components/states";
 import { Badge } from "@/components/ui/badge";
 import { getVisaCountryFeed } from "@/lib/live";
 import { visaCategories, visaCountries } from "@/lib/navigation";
-import { slugify } from "@/lib/utils";
+import { slugify, titleFromSlug } from "@/lib/utils";
 
 type Params = { country: string };
 
@@ -16,8 +14,7 @@ export function generateStaticParams() {
 }
 
 export function generateMetadata({ params }: { params: Params }): Metadata {
-  const country = visaCountries.find((item) => slugify(item) === params.country);
-  if (!country) return {};
+  const country = visaCountries.find((item) => slugify(item) === params.country) || titleFromSlug(params.country);
   return {
     title: `${country} Visa and Immigration Updates`,
     description: `Source-based ${country} visa, immigration, student, work, sponsorship, fee, ETA, and official update briefings.`
@@ -31,18 +28,17 @@ export default async function VisaCountryPage({
   params: Params;
   searchParams?: Record<string, string | string[] | undefined>;
 }) {
-  const country = visaCountries.find((item) => slugify(item) === params.country);
-  if (!country) notFound();
+  const country = visaCountries.find((item) => slugify(item) === params.country) || titleFromSlug(params.country);
 
   const page = Number(Array.isArray(searchParams?.page) ? searchParams?.page[0] : searchParams?.page || "1");
   const feed = await getVisaCountryFeed(country, { page, pageSize: 18 });
   const items = feed.items;
 
   return (
-    <div className="mx-auto max-w-7xl space-y-8 px-4 py-8 sm:px-6">
+    <div className="mx-auto max-w-[1720px] space-y-8 px-4 py-8 sm:px-6 xl:px-8">
       <header className="premium-panel p-6 sm:p-8">
         <Badge>Country landing page</Badge>
-        <h1 className="mt-4 text-3xl font-semibold tracking-tight sm:text-5xl">{country} Visa and Immigration Updates</h1>
+        <h1 className="mt-4 text-2xl font-semibold tracking-tight sm:text-4xl">{country} Visa and Immigration Updates</h1>
         <p className="mt-4 max-w-3xl leading-7 text-muted-foreground">
           Official-source and permitted-feed briefings for students, workers, sponsors, families, visitors, and employers.
         </p>
@@ -50,10 +46,9 @@ export default async function VisaCountryPage({
           {visaCategories.map((category) => <Badge key={category}>{category}</Badge>)}
         </div>
       </header>
-      <SensitivityDisclaimer />
       {items.length ? (
         <section className="space-y-5">
-          <div className="grid gap-4 lg:grid-cols-2">
+          <div className="grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(min(100%,20rem),1fr))]">
             {items.map((brief) => <ArticleCard key={brief.id} brief={brief} />)}
           </div>
           {feed.hasMore && (
@@ -65,7 +60,7 @@ export default async function VisaCountryPage({
           )}
         </section>
       ) : (
-        <EmptyState title={`${country} source adapters are ready`} message="Official update pages can be connected without storing full article text." />
+        <EmptyState title={`No visa updates for ${country} right now`} message="Choyis will keep checking official and tightly relevant source metadata for this country." />
       )}
     </div>
   );

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { EmptyState } from "@/components/states";
+import { SavedItemsClient } from "@/components/saved-items-client";
 
 export const metadata: Metadata = {
   title: "Saved Items",
@@ -12,10 +12,10 @@ export default function SavedItemsPage() {
       <header className="premium-panel p-6 sm:p-8">
         <h1 className="text-3xl font-semibold tracking-tight sm:text-5xl">Saved Items</h1>
         <p className="mt-4 leading-7 text-muted-foreground">
-          Bookmark state is ready for Supabase-backed saved items when user features are enabled.
+          Save live stories, official updates, repos, and video briefings locally in your browser while Choyis news remains login-free.
         </p>
       </header>
-      <EmptyState title="No saved briefings yet" message="Saved articles, videos, visa notices, repositories, and research signals will appear here." />
+      <SavedItemsClient />
     </div>
   );
 }

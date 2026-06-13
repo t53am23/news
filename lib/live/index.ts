@@ -1,4 +1,5 @@
 import { unstable_cache } from "next/cache";
+import { applyContentRules } from "@/lib/content-rules";
 import { briefs } from "@/lib/mock-data";
 import { coreSections } from "@/lib/navigation";
 import { sourceRegistry } from "@/lib/source-registry";
@@ -46,12 +47,14 @@ function getFallbackItems(rule: SectionRule, query: LiveQuery, limit: number) {
       return queryTokens.every((token) => haystack.includes(token));
     })
     .slice(0, limit)
-    .map((item) => ({
-      ...item,
-      isLive: false,
-      isFallback: true,
-      linkBehavior: "brief" as const
-    }));
+    .map((item) =>
+      applyContentRules({
+        ...item,
+        isLive: false,
+        isFallback: true,
+        linkBehavior: "brief" as const
+      })
+    );
 }
 
 function mapSectionHref(sectionId: string) {
@@ -229,12 +232,13 @@ const getCachedHomePageData = unstable_cache(
       }
     ].filter((topic) => topic.items.length);
 
-    const trendingTopics = extractTrendingTopics([
+    const extractedTopics = extractTrendingTopics([
       ...featured.items,
       ...topUpdates.items,
       ...moreNews.items,
       ...topicItems
     ]);
+    const trendingTopics = extractedTopics.length >= 4 ? extractedTopics : [];
 
     return {
       featured: featured.items.slice(0, 4),
@@ -244,7 +248,7 @@ const getCachedHomePageData = unstable_cache(
       topics,
       trendingTopics,
       statuses: allStatuses,
-      showNewsletter: true
+      showNewsletter: topUpdates.items.length >= 3
     } satisfies HomePageData;
   },
   ["choyis-home-page-data-v3"],
@@ -272,6 +276,7 @@ export function getSourceDirectoryEntriesWithStatus() {
 }
 
 function resolveSourceStatus(source: SourceRegistryEntry, providerStatuses: Map<string, SourceOperationalStatus>) {
+  if (source.status) return source.status;
   if (source.sourceType === "directory_only") return "fallback_only" as const;
   if (source.mode === "directory_only") return "fallback_only" as const;
   if (source.providerId && providerStatuses.has(source.providerId)) return providerStatuses.get(source.providerId) || "inactive";
@@ -289,10 +294,12 @@ export function getRelatedFallbackBriefs(current: SignalBrief, limit = 3) {
     .filter((brief) => brief.id !== current.id)
     .filter((brief) => brief.category === current.category || brief.tags.some((tag) => current.tags.includes(tag)))
     .slice(0, limit)
-    .map((item) => ({
-      ...item,
-      isLive: false,
-      isFallback: true,
-      linkBehavior: "brief" as const
-    }));
+    .map((item) =>
+      applyContentRules({
+        ...item,
+        isLive: false,
+        isFallback: true,
+        linkBehavior: "brief" as const
+      })
+    );
 }

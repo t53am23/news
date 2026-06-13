@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect } from "react";
 import { usePathname } from "next/navigation";
+import { setPreference } from "@/lib/browser-storage";
 import { cn } from "@/lib/utils";
 
 const topTabs = [
@@ -20,6 +22,10 @@ const topTabs = [
 
 export function CategoryTabs() {
   const pathname = usePathname();
+
+  useEffect(() => {
+    setPreference("preferredTab", pathname);
+  }, [pathname]);
 
   return (
     <nav className="-mx-3 overflow-x-auto border-b border-border/70 px-3 pb-3 sm:mx-0 sm:px-0" aria-label="Topic navigation">

@@ -161,6 +161,29 @@ export const sectionRules: Record<string, SectionRule> = {
     pageSize: defaultPageSize,
     fallbackCategories: ["AI & Technology", "GitHub Trends", "Developer Trends"]
   },
+  "startups-business": {
+    id: "startups-business",
+    title: "Startups & Business",
+    category: "Startups & Business",
+    providers: ["rssSources", "guardian", "newsdata", "gnews", "newsapi", "mediastack"],
+    keywords: ["business startups funding economy markets operators companies investment"],
+    tags: ["business", "markets", "companies"],
+    providerCategory: "business",
+    pageSize: defaultPageSize,
+    fallbackCategories: ["Startups & Business", "Local", "Politics & Policy"]
+  },
+  "developer-trends": {
+    id: "developer-trends",
+    title: "Developer Trends",
+    category: "Developer Trends",
+    providers: ["githubSearch", "githubTrending", "rssSources", "newsdata", "gnews", "newsapi"],
+    keywords: ["developer tools frameworks typescript python javascript open source engineering"],
+    tags: ["developer", "tooling", "open source"],
+    allowGitHub: true,
+    providerCategory: "technology",
+    pageSize: defaultPageSize,
+    fallbackCategories: ["Developer Trends", "GitHub Trends", "AI & Technology"]
+  },
   cybersecurity: {
     id: "cybersecurity",
     title: "Cybersecurity",
@@ -194,6 +217,60 @@ export const sectionRules: Record<string, SectionRule> = {
     tags: ["video"],
     pageSize: defaultPageSize,
     fallbackCategories: ["Video Briefs"]
+  },
+  podcasts: {
+    id: "podcasts",
+    title: "Podcast Briefs",
+    category: "Podcasts",
+    providers: [],
+    keywords: ["podcast interview episode briefing"],
+    tags: ["podcast"],
+    pageSize: defaultPageSize,
+    fallbackCategories: ["Video Briefs"]
+  },
+  "product-reviews": {
+    id: "product-reviews",
+    title: "Product Reviews",
+    category: "Product Reviews",
+    providers: ["rssSources", "newsdata", "gnews", "newsapi"],
+    keywords: ["review buyer guide product comparison laptop phone software"],
+    tags: ["reviews", "products", "buyers"],
+    providerCategory: "technology",
+    pageSize: defaultPageSize,
+    fallbackCategories: ["Product Reviews", "AI & Technology"]
+  },
+  "research-science": {
+    id: "research-science",
+    title: "Research & Science",
+    category: "Research & Science",
+    providers: ["rssSources", "newsdata", "gnews", "newsapi", "guardian"],
+    keywords: ["research science study evidence public health discovery"],
+    tags: ["research", "science", "evidence"],
+    providerCategory: "technology",
+    pageSize: defaultPageSize,
+    fallbackCategories: ["Research & Science", "Health & Lifestyle"]
+  },
+  "health-lifestyle-updates": {
+    id: "health-lifestyle-updates",
+    title: "Health & Lifestyle Updates",
+    category: "Health & Lifestyle",
+    providers: ["rssSources", "guardian", "newsdata", "gnews", "newsapi"],
+    keywords: ["public health wellbeing health policy family planning lifestyle"],
+    tags: ["health", "public health", "wellbeing"],
+    providerCategory: "health",
+    pageSize: defaultPageSize,
+    fallbackCategories: ["Health & Lifestyle", "Research & Science"]
+  },
+  "human-rights": {
+    id: "human-rights",
+    title: "Human Rights",
+    category: "Human Rights",
+    providers: ["rssSources", "guardian", "newsdata", "gnews", "newsapi", "eventregistry"],
+    keywords: ["human rights civil liberties public interest refugees justice accountability"],
+    tags: ["human rights", "public interest", "rights"],
+    providerCategory: "general",
+    pageSize: defaultPageSize,
+    fallbackCategories: ["Politics & Policy", "World", "Health & Lifestyle"]
   }
 };
 
@@ -201,8 +278,11 @@ export const homeSectionOrder = [
   "visa-immigration-watch",
   "students-study-abroad",
   "work-cos-sponsorship",
+  "startups-business",
   "politics-policy",
   "ai-technology",
+  "developer-trends",
+  "health-lifestyle-updates",
   "cybersecurity",
   "github-trends",
   "video-briefs"

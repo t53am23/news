@@ -362,6 +362,7 @@ export const sourceRegistry: SourceRegistryEntry[] = [
   },
   {
     id: "youtube-data-api",
+    requiredEnvVar: "YOUTUBE_API_KEY",
     country: "Global",
     region: "Global",
     name: "YouTube Data API",
@@ -373,7 +374,74 @@ export const sourceRegistry: SourceRegistryEntry[] = [
     homepage: "https://developers.google.com/youtube/v3",
     apiUrl: "https://www.googleapis.com/youtube/v3",
     trustTier: "verified",
-    notes: "Placeholder live-video provider for a later pass."
+    notes: "Server-side metadata source for playlistItems, channels, and video explainers.",
+    permissionsPosture: "brief_metadata_only"
+  },
+  {
+    id: "podcast-index",
+    requiredEnvVar: "PODCAST_INDEX_API_KEY",
+    country: "Global",
+    region: "Global",
+    name: "Podcast Index",
+    sourceType: "podcast",
+    sourceCategory: "Podcast discovery metadata",
+    mode: "api",
+    language: "Multi-language",
+    contentCategories: ["Podcasts", "Interviews", "Technology", "Policy"],
+    homepage: "https://podcastindex.org/",
+    apiUrl: "https://api.podcastindex.org/api/1.0",
+    trustTier: "verified",
+    notes: "Optional podcast metadata source for show and episode discovery.",
+    status: "future",
+    permissionsPosture: "brief_metadata_only"
+  },
+  {
+    id: "apple-podcasts",
+    country: "Global",
+    region: "Global",
+    name: "Apple Podcasts Directory",
+    sourceType: "podcast",
+    sourceCategory: "Podcast directory metadata",
+    mode: "directory_only",
+    language: "Multi-language",
+    contentCategories: ["Podcasts", "Interviews"],
+    homepage: "https://podcasts.apple.com/",
+    trustTier: "directory",
+    notes: "Directory-level discovery source for podcast lookup and source handoff.",
+    status: "future",
+    permissionsPosture: "directory_only"
+  },
+  {
+    id: "who-news",
+    country: "Global",
+    region: "Global",
+    name: "World Health Organization",
+    sourceType: "research",
+    sourceCategory: "Official global health updates",
+    mode: "rss",
+    language: "English",
+    contentCategories: ["Health", "Public Health", "Research"],
+    homepage: "https://www.who.int/news",
+    feedUrl: "https://www.who.int/rss-feeds/news-english.xml",
+    trustTier: "official",
+    notes: "Official public-health and research update source.",
+    permissionsPosture: "brief_metadata_only"
+  },
+  {
+    id: "ohchr",
+    country: "Global",
+    region: "Global",
+    name: "UN Human Rights",
+    sourceType: "official_government",
+    sourceCategory: "Official human rights updates",
+    mode: "rss",
+    language: "English",
+    contentCategories: ["Human Rights", "Official Updates", "Public Interest"],
+    homepage: "https://www.ohchr.org/",
+    feedUrl: "https://www.ohchr.org/en/feeds/news.xml",
+    trustTier: "official",
+    notes: "Official United Nations human-rights newsroom and update source.",
+    permissionsPosture: "brief_metadata_only"
   }
 ];
 
